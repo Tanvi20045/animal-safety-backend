@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const Report = require("../models/Report");
-const auth = require("../middleware/auth");
 
 // CREATE REPORT
 router.post("/", async (req, res) => {
