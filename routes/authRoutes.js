@@ -1,36 +1,30 @@
 const express = require("express");
 const router = express.Router();
-router.get("/", (req, res) => {
-  res.send("Auth API working ✅");
-});
-
-module.exports = router;
 
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// ✅ TEST ROUTE
+router.get("/", (req, res) => {
+  res.send("Auth API working ✅");
+});
+
 // ============================
 // REGISTER USER
 // ============================
 router.post("/register", async (req, res) => {
-  
-
-
   try {
     const { name, email, password } = req.body;
 
-    // check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // create user
     const user = await User.create({
       name,
       email,
@@ -58,22 +52,19 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // check user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // create token
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET, // you can move this to .env later
+      process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
@@ -92,4 +83,5 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// ✅ ONLY ONE EXPORT (AT END)
 module.exports = router;
