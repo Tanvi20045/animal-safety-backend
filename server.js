@@ -17,7 +17,11 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: "https://tanvi20045.github.io"
+}));
+
 app.use(express.json());
 // IMPORT ROUTES
 const authRoutes = require("./routes/authRoutes");
@@ -28,7 +32,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/reports", reportRoutes);
 
 // Test route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("API Running...");
 });
 
