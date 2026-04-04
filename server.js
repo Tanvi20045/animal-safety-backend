@@ -18,9 +18,7 @@ const app = express();
 
 // Middleware
 //app.use(cors());
-app.use(cors({
-  origin: "https://tanvi20045.github.io"
-}));
+app.use(cors());
 
 app.use(express.json());
 // IMPORT ROUTES
